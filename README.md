@@ -1,2 +1,2 @@
 # linearRegressionCpp
-so i'm obsessed with linear regression
+so i've been obsessed with linear regression since I started to learn ML
