@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <math.h>
 
-using namespace std;
-
 class LinearRegression
 {
     private:
@@ -19,52 +17,73 @@ class LinearRegression
         double* b;
 
         //number of features
-        int* m; 
+        int m; 
 
         //samples
-        vector<double>* X;
-        vector<double>* Y;
+        std::vector<double> X;
+        std::vector<double> Y;
 
         //learning rate
-        double* lr;
+        double lr;
 
         //number of iterations
-        int* num_iterations;
+        int numIterations;
 
     public:
+        //down here using reference and const because the functions are not allowed to keep the
+        //data that will be passed in -> avoid unessary copying of data and also to make sure that the data is not modified by the function
         //constructor
         LinearRegression();
 
         LinearRegression(double alpha, int maxIterations);
 
         //destructor
-        ~LinearRegression()
+        ~LinearRegression();
+
+        //helper functions
+
+        //calculate size 
+        int calSize (const std::vector<double>& x)
         {
-            delete w;
-            delete b;
-            delete m;
-            delete lr;
-            delete num_iterations;
+            return x.size();
+        }
+
+        void setWeight(double weight)
+        {
+            *w = weight;
+        }
+
+        void setBias(double bias)
+        {
+            *b = bias;
         }
 
         //function to calculate number of features
-        int calculateNumFeatures(vector<double>* X_train);
+        int calculateNumFeatures(const std::vector<double>& X_train);
 
         //function to calculate the mean squared error
-        double MSE(vector<double>* Y_true, vector<double>* Y_pred);
+        double MSE(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias);
+
+        //helper to print cost @each iteration
+        void printCost(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias, int iteration);
 
         //gradient function
-        void gradient(vector<double>* X_train, vector<double>* Y_train, vector<double>* Y_pred);
+        //void gradient(const std::vector<double>& X_train, const std::vector<double>& Y_train, const std::vector<double>& Y_pred);
+        //calculate dC/dw
+        double dCdw(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
+
+        double dCdb(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
 
         //function to update weights and bias
-        void update(vector<double>* X_train, vector<double>* Y_train, vector<double>* Y_pred);
+        void update(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
 
         //fit function
-        void fit(vector<double>* X_train, vector<double>* Y_train, int num_iterations);
+        void fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations);
 
         //predict function
-        vector<double> predict(vector<double>* X_test);
+        std::vector<double> predict(const std::vector<double>& X_input);
 
+        void printPredictions(const std::vector<double>& predictions);
 
 
 };
