@@ -69,14 +69,14 @@ class LinearRegression
         double MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true);
 
         //helper to print cost @each iteration
-        void printCost(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias, int iteration);
+        void printCost(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true, int iteration);
 
         //gradient function
         //void gradient(const std::vector<double>& X_train, const std::vector<double>& Y_train, const std::vector<double>& Y_pred);
         //calculate dC/dw
-        double dCdw(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
+        std::vector<double> dCdw(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train);
 
-        double dCdb(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
+        double dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double weight, double bias);
 
         //function to update weights and bias
         void update(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);

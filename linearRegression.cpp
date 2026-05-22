@@ -52,28 +52,48 @@ double LinearRegression::MSE(const std::vector<std::vector<double>>& X_train, co
     return cost / curr_samples;
 }
 
-void LinearRegression::printCost(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias, int iteration)
+void LinearRegression::printCost(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true, int iteration)
 {
         double cost = MSE(X_train, Y_true);
         std::cout << "Iteration: " << iteration << ", Cost: " << cost << std::endl;
 }
 
-double LinearRegression::dCdw(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias)
+std::vector<double> LinearRegression::dCdw(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train)
 {
-    double dCdw = 0.0;
-    int m = calSize(Y_train);
-    setWeight(weight);
-    setBias(bias);
+    //create a vector for each weight (in this case m) and initialize it to 0.0
+    std::vector<double> dcdw(m, 0.0);
 
-    for (int i = 0; i < m; ++i)
+    //std::vector<double> Y_hat = predict(X_train);
+
+    for (int i = 0; i < n; ++i) //goes through each row
     {
         //double Y_pred = (*w * X_train[i]) + *b;
         //dCdw += (Y_pred - Y_train[i]) * X_train[i];
+
+        //predict for this row first 
+        double Y_hat_i = 0.0;
+        for (int j = 0; j < m; ++j)
+        {
+            Y_hat_i += w[j] * X_train[i][j];
+        }
+        Y_hat_i += b;
+
+        //now we use it down here 
+        for (int j = 0; j < m; ++j) //goes through each column
+        {
+            dcdw[j] += (Y_hat_i - Y_train[i]) * X_train[i][j];
+        }
+
     }
-    return dCdw / m;
+
+    for (int j = 0; j < m; ++j)
+    {
+        dcdw[j] /= n;
+    }
+    return dcdw;
 }
 
-double LinearRegression::dCdb(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias)
+double LinearRegression::dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double weight, double bias)
 {
     double dCdb = 0.0;
     int m = calSize(Y_train);
