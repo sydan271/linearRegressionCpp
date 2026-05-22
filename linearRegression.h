@@ -46,7 +46,22 @@ class LinearRegression
         ~LinearRegression();
 
         //helper functions
-        
+        //the setters
+        void setW(std::vector<double> weights) { w = weights; }
+        void setB(double bias) { b = bias; }
+        void setM(int numFeatures) { m = numFeatures; }
+        void setN(int numSamples) { n = numSamples; }
+        void setLr(double learningRate) { lr = learningRate; }
+        void setNumIterations(int iterations) { numIterations = iterations; }
+
+        //the getters
+        std::vector<double> getW() const { return w; }
+        double getB() const { return b; }
+        int getM() const { return m; }
+        int getN() const { return n; }
+        double getLr() const { return lr; }
+        int getNumIterations() const { return numIterations; }
+
         //function to calculate the mean squared error
         double MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true);
 
