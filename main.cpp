@@ -3,6 +3,9 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <chrono>
+#include <fstream>
+#include <string>
 
 int main()
 {
@@ -22,7 +25,15 @@ int main()
 
     std::cout << "Training..." << std::endl;
     // Train with a small learning rate
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     model.fit(X_train, Y_train, 0.01, 1000);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    std::cout << "Training completed in " << duration.count() << " ms" << std::endl;
 
     // Predict new data
     // Test: {5.0, 6.0} -> 2(5) + 3(6) + 1 = 29
