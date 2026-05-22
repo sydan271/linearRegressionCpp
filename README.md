@@ -18,3 +18,7 @@ there will be a time counter using both python and c++ later
 
 
 and next will be neural network or something further 
+
+
+
+oh, forgot to update multiple weights 
