@@ -93,28 +93,38 @@ std::vector<double> LinearRegression::dCdw(const std::vector<std::vector<double>
     return dcdw;
 }
 
-double LinearRegression::dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double weight, double bias)
+double LinearRegression::dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train)
 {
-    double dCdb = 0.0;
-    int m = calSize(Y_train);
-    setWeight(weight);
-    setBias(bias);
-
-    for (int i = 0; i < m; ++i)
+    double dcdb = 0.0;
+    for (int i = 0; i < n; ++i)
     {
-        //double Y_pred = (*w * X_train[i]) + *b;
-        //dCdb += Y_pred - Y_train[i];
+        //predict only here first 
+        double Y_hat_i = 0.0;
+        for (int j = 0; j < m; ++j)
+        {
+            Y_hat_i += w[j] * X_train[i][j];
+        }
+        Y_hat_i += b;
+
+        dcdb += Y_hat_i - Y_train[i];
     }
-    return dCdb / m;
+    return dcdb / n;
 }
 
-void LinearRegression::update(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias)
+void LinearRegression::update(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train)
 {
-    double dw = dCdw(X_train, Y_train, weight, bias);
-    double db = dCdb(X_train, Y_train, weight, bias);
+    std::vector<double> dw = dCdw(X_train, Y_train);
+    double db = dCdb(X_train, Y_train);
 
     //*w -= lr * dw;
     //*b -= lr * db;
+
+    //update weights
+    for (int j = 0; j < m; ++j)
+    {
+        w[j] -= lr * dw[j];
+    }
+    b -= lr * db;
 }
 
 void LinearRegression::fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations)

@@ -19,13 +19,14 @@ class LinearRegression
         //bias
         double b;
 
-        //number of features
+        //number of features (columns)
+        //w is associated with m because in the formula f = wx + b and so on, w is the one that is multiplied by the number of features (m)
         int m; 
 
         //samples
         //std::vector<double> X;
         //std::vector<double> Y;
-        //number of samples 
+        //number of samples (rows)
         int n;
         //learning rate
         double lr;
@@ -76,13 +77,13 @@ class LinearRegression
         //calculate dC/dw
         std::vector<double> dCdw(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train);
 
-        double dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double weight, double bias);
+        double dCdb(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train);
 
         //function to update weights and bias
-        void update(const std::vector<double>& X_train, const std::vector<double>& Y_train, double weight, double bias);
+        void update(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train);
 
         //fit function
-        void fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations);
+        void fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double alpha, int iterations);
 
         //predict function
         std::vector<double> predict(const std::vector<std::vector<double>>& X_input);
