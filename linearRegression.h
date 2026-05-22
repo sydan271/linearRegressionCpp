@@ -66,7 +66,7 @@ class LinearRegression
         int calculateNumFeatures(const std::vector<std::vector<double>>& X_train);
 
         //function to calculate the mean squared error
-        double MSE(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias);
+        double MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true);
 
         //helper to print cost @each iteration
         void printCost(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias, int iteration);

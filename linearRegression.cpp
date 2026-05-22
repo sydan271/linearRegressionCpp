@@ -37,24 +37,24 @@ int LinearRegression::calculateNumFeatures(const std::vector<std::vector<double>
     return X_train[0].size();
 }
 
-double LinearRegression::MSE(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias)
+double LinearRegression::MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true)
 {
     double cost = 0.0;
-    int m = calSize(Y_true);
-    setWeight(weight);
-    setBias(bias);
+    int curr_samples = Y_true.size();
+    
+    std::vector<double> Y_hat = predict(X_train);
 
-    for (int i = 0; i < m; ++i)
+    for (int i = 0; i < curr_samples; ++i)
     {
-        //double Y_pred = (*w * X_train[i]) + *b;
-        //cost += pow(Y_pred - Y_true[i], 2);
+        cost += pow(Y_hat[i]- Y_true[i], 2);
     }
-    return cost / m;
+
+    return cost / curr_samples;
 }
 
 void LinearRegression::printCost(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias, int iteration)
 {
-        double cost = MSE(X_train, Y_true, weight, bias);
+        double cost = MSE(X_train, Y_true);
         std::cout << "Iteration: " << iteration << ", Cost: " << cost << std::endl;
 }
 
@@ -94,7 +94,7 @@ void LinearRegression::update(const std::vector<double>& X_train, const std::vec
     double db = dCdb(X_train, Y_train, weight, bias);
 
     //*w -= lr * dw;
-    *b -= lr * db;
+    //*b -= lr * db;
 }
 
 void LinearRegression::fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations)
@@ -112,11 +112,11 @@ void LinearRegression::fit(const std::vector<double>& X_train, const std::vector
 std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& X_input)
 {
     std::vector<double> predictions;
-    for (int i = 0; i < X_input.size(); ++i)
+    for (int i = 0; i < X_input.size(); ++i) //loop through the rows
     {
         double Y_hat = 0.0;
 
-        for (int j = 0; j < X_input[i].size(); ++j)
+        for (int j = 0; j < m; ++j) //loop through each columns
         {
             Y_hat += w[j] * X_input[i][j];
         }
