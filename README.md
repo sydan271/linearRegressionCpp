@@ -9,4 +9,12 @@ ok so i used the math on https://towardsdatascience.com/mathematics-hidden-behin
 
 the idea was to build the main functions: cost, gradient(which are dC/dw and dC/db), and gradient descent (the fit function). each one will take the math formula. there is a print cost function in my implement file that can be used to print the cost at [i]. 
 
-next will be neural network or something further 
+
+my next goal is to use the data somehow similar to pandas in python, i'll try to figure out it right now 
+
+
+there will be a time counter using both python and c++ later
+
+
+
+and next will be neural network or something further 
