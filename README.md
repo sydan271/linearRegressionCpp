@@ -25,3 +25,9 @@ oh, forgot to update multiple weights
 
 
 as of 14:37 May 22 2026, it can be usable for multiple features, I'll look for a practical dataset to test on
+
+
+a little faster than python/scikitlearn's linear regression model
+
+
+can't visualize at this moment
