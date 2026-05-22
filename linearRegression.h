@@ -11,18 +11,22 @@ class LinearRegression
     private:
         //declaring private variables:
         //weight
-        double* w; 
+        //only be able to predict 1 feature
+        //double* w;
+        
+        std::vector<double> w;
 
         //bias
-        double* b;
+        double b;
 
         //number of features
         int m; 
 
         //samples
-        std::vector<double> X;
-        std::vector<double> Y;
-
+        //std::vector<double> X;
+        //std::vector<double> Y;
+        //number of samples 
+        int n;
         //learning rate
         double lr;
 
@@ -50,16 +54,16 @@ class LinearRegression
 
         void setWeight(double weight)
         {
-            *w = weight;
+            w.push_back(weight);
         }
 
         void setBias(double bias)
         {
-            *b = bias;
+            b = bias;
         }
 
         //function to calculate number of features
-        int calculateNumFeatures(const std::vector<double>& X_train);
+        int calculateNumFeatures(const std::vector<std::vector<double>>& X_train);
 
         //function to calculate the mean squared error
         double MSE(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias);
@@ -81,7 +85,7 @@ class LinearRegression
         void fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations);
 
         //predict function
-        std::vector<double> predict(const std::vector<double>& X_input);
+        std::vector<double> predict(const std::vector<std::vector<double>>& X_input);
 
         void printPredictions(const std::vector<double>& predictions);
 

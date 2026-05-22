@@ -7,11 +7,12 @@
 
 LinearRegression::LinearRegression()
 {
-    w = new double(0.0);
-    b = new double(0.0);
+    w = std::vector<double>();
+    b = 0.0;
     m = 0;
-    X = std::vector<double>();
-    Y = std::vector<double>();
+    n = 0;
+    //X = std::vector<double>();
+    //Y = std::vector<double>();
     lr = 0.01;
     numIterations = 0;
 }
@@ -20,20 +21,20 @@ LinearRegression::LinearRegression(double alpha, int maxIterations)
 {
     lr = alpha;
     numIterations = maxIterations;
-    w = new double(0.0);
-    b = new double(0.0);
+    b = 0; 
     m = 0;
+    n = 0; 
 }
 
 LinearRegression::~LinearRegression()
 {
-    delete w;
-    delete b;
+
 }
 
-int LinearRegression::calculateNumFeatures(const std::vector<double>& X_train)
+int LinearRegression::calculateNumFeatures(const std::vector<std::vector<double>>& X_train)
 {
-    return X_train.size();
+    //size of the columns of the 2D vector X_train will give us the number of features
+    return X_train[0].size();
 }
 
 double LinearRegression::MSE(const std::vector<double>& X_train, const std::vector<double>& Y_true, double weight, double bias)
@@ -45,8 +46,8 @@ double LinearRegression::MSE(const std::vector<double>& X_train, const std::vect
 
     for (int i = 0; i < m; ++i)
     {
-        double Y_pred = (*w * X_train[i]) + *b;
-        cost += pow(Y_pred - Y_true[i], 2);
+        //double Y_pred = (*w * X_train[i]) + *b;
+        //cost += pow(Y_pred - Y_true[i], 2);
     }
     return cost / m;
 }
@@ -66,8 +67,8 @@ double LinearRegression::dCdw(const std::vector<double>& X_train, const std::vec
 
     for (int i = 0; i < m; ++i)
     {
-        double Y_pred = (*w * X_train[i]) + *b;
-        dCdw += (Y_pred - Y_train[i]) * X_train[i];
+        //double Y_pred = (*w * X_train[i]) + *b;
+        //dCdw += (Y_pred - Y_train[i]) * X_train[i];
     }
     return dCdw / m;
 }
@@ -81,8 +82,8 @@ double LinearRegression::dCdb(const std::vector<double>& X_train, const std::vec
 
     for (int i = 0; i < m; ++i)
     {
-        double Y_pred = (*w * X_train[i]) + *b;
-        dCdb += Y_pred - Y_train[i];
+        //double Y_pred = (*w * X_train[i]) + *b;
+        //dCdb += Y_pred - Y_train[i];
     }
     return dCdb / m;
 }
@@ -92,7 +93,7 @@ void LinearRegression::update(const std::vector<double>& X_train, const std::vec
     double dw = dCdw(X_train, Y_train, weight, bias);
     double db = dCdb(X_train, Y_train, weight, bias);
 
-    *w -= lr * dw;
+    //*w -= lr * dw;
     *b -= lr * db;
 }
 
@@ -100,20 +101,27 @@ void LinearRegression::fit(const std::vector<double>& X_train, const std::vector
 {
     lr = alpha;
     numIterations = iterations;
-    m = calculateNumFeatures(X_train);
+    //m = calculateNumFeatures(X_train);
     for (int i = 0; i < numIterations; ++i)
     {
-        update(X_train, Y_train, *w, *b);
+        //update(X_train, Y_train, *w, *b);
         //printCost(X_train, Y_train, *w, *b, i);
     }
 }
 
-std::vector<double> LinearRegression::predict(const std::vector<double>& X_input)
+std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& X_input)
 {
     std::vector<double> predictions;
-    for (const auto& x : X_input)
+    for (int i = 0; i < X_input.size(); ++i)
     {
-        double Y_hat = (*w * x) + *b;
+        double Y_hat = 0.0;
+
+        for (int j = 0; j < X_input[i].size(); ++j)
+        {
+            Y_hat += w[j] * X_input[i][j];
+        }
+
+        Y_hat += b;
         predictions.push_back(Y_hat);
     }
 
@@ -127,6 +135,6 @@ void LinearRegression::printPredictions(const std::vector<double>& predictions)
     {
         std::cout << pred << std::endl;
     }
-    std::cout << "Optimal weights: " << *w << std::endl << "Optimal bias: " << *b << std::endl;
+    //std::cout << "Optimal weights: " << *w << std::endl << "Optimal bias: " << *b << std::endl;
 }
         
