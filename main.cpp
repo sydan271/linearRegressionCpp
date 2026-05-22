@@ -6,17 +6,29 @@
 
 int main()
 {
-    //test data 
-    std::vector<double> X_train = {1.0, 2.0, 3.0, 4.0, 5.0};
-    std::vector<double> Y_train = {2.0, 4.0, 6.0, 8.0, 10.0};
+    // Dataset: y = 2*x1 + 3*x2 + 1
+    // X columns: [x1, x2]
+    std::vector<std::vector<double>> X_train = {
+        {1.0, 2.0}, // 2(1) + 3(2) + 1 = 9
+        {2.0, 1.0}, // 2(2) + 3(1) + 1 = 8
+        {3.0, 4.0}, // 2(3) + 3(4) + 1 = 19
+        {4.0, 3.0}  // 2(4) + 3(3) + 1 = 18
+    };
 
-    LinearRegression modelLR;
+    std::vector<double> Y_train = {9.0, 8.0, 19.0, 18.0};
 
-    modelLR.fit(X_train, Y_train, 0.01, 1000);
+    // Instantiate model
+    LinearRegression model;
 
-    std::vector<double> testData = {6.0, 7.0, 8.0};
-    std::vector<double> predictions = modelLR.predict(testData);
-    modelLR.printPredictions(predictions);
-    
+    std::cout << "Training..." << std::endl;
+    // Train with a small learning rate
+    model.fit(X_train, Y_train, 0.01, 1000);
+
+    // Predict new data
+    // Test: {5.0, 6.0} -> 2(5) + 3(6) + 1 = 29
+    std::vector<std::vector<double>> test_data = {{5.0, 6.0}};
+    std::vector<double> results = model.predict(test_data);
+
+    model.printPredictions(results);
     return 0;
 }
