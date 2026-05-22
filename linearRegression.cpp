@@ -31,12 +31,6 @@ LinearRegression::~LinearRegression()
 
 }
 
-int LinearRegression::calculateNumFeatures(const std::vector<std::vector<double>>& X_train)
-{
-    //size of the columns of the 2D vector X_train will give us the number of features
-    return X_train[0].size();
-}
-
 double LinearRegression::MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true)
 {
     double cost = 0.0;
@@ -127,16 +121,34 @@ void LinearRegression::update(const std::vector<std::vector<double>>& X_train, c
     b -= lr * db;
 }
 
-void LinearRegression::fit(const std::vector<double>& X_train, const std::vector<double>& Y_train, double alpha, int iterations)
+//MOST IMPORTANT ONE
+void LinearRegression::fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_train, double alpha, int iterations)
 {
     lr = alpha;
     numIterations = iterations;
-    //m = calculateNumFeatures(X_train);
+    
+    //number of rows (samples)
+    n = X_train.size();
+
+    //number of columns (features)
+    m = X_train[0].size();
+
+    //initilize weights to 0.0
+    w = std::vector<double>(m, 0.0);
+    b = 0.0;
+
     for (int i = 0; i < numIterations; ++i)
     {
-        //update(X_train, Y_train, *w, *b);
-        //printCost(X_train, Y_train, *w, *b, i);
+        update(X_train, Y_train);
+        //printCost(X_train, Y_train, i);
+
+        //to avoid printing to much to become a mess, print after 100 iterations 
+        if (i % 100 == 0)
+        {
+            printCost(X_train, Y_train, i);
+        }
     }
+
 }
 
 std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& X_input)
@@ -160,11 +172,21 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 
 void LinearRegression::printPredictions(const std::vector<double>& predictions)
 {
+    std::vector<double>::const_iterator itr;
     std::cout << "Predictions: " << std::endl;
-    for (const auto& pred : predictions)
+    for (auto itr = predictions.begin(); itr != predictions.end(); ++itr)
     {
-        std::cout << pred << std::endl;
+        std::cout << *itr << std::endl;
     }
+
+    std::vector<double>::const_iterator itr_w;
+    std::cout << "Optimal weights: " << std::endl;
+    for (auto itr_w = w.begin(); itr_w != w.end(); ++itr_w)
+    {        
+        std::cout << *itr_w << std::endl;
+    }
+
+    std::cout << "Optimal bias: " << b << std::endl;
     //std::cout << "Optimal weights: " << *w << std::endl << "Optimal bias: " << *b << std::endl;
 }
         

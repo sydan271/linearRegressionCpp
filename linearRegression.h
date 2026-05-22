@@ -46,26 +46,7 @@ class LinearRegression
         ~LinearRegression();
 
         //helper functions
-
-        //calculate size 
-        int calSize (const std::vector<double>& x)
-        {
-            return x.size();
-        }
-
-        void setWeight(double weight)
-        {
-            w.push_back(weight);
-        }
-
-        void setBias(double bias)
-        {
-            b = bias;
-        }
-
-        //function to calculate number of features
-        int calculateNumFeatures(const std::vector<std::vector<double>>& X_train);
-
+        
         //function to calculate the mean squared error
         double MSE(const std::vector<std::vector<double>>& X_train, const std::vector<double>& Y_true);
 
