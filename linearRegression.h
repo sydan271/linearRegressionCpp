@@ -5,6 +5,8 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <fstream>
+#include <string>
 
 class LinearRegression
 {
@@ -88,4 +90,6 @@ class LinearRegression
 
 
 };
+
+void saveToCSV(const std::vector<std::vector<double>>& X, const std::vector<double>& Y, const std::vector<double>& predictions, const std::string& filename);
 #endif // LINEARREGRESSION_H

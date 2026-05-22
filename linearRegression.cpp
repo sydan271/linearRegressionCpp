@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <fstream>
+#include <string>
 
 LinearRegression::LinearRegression()
 {
@@ -141,12 +143,13 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& X_train, cons
     {
         update(X_train, Y_train);
         //printCost(X_train, Y_train, i);
-
+        /*
         //to avoid printing to much to become a mess, print after 100 iterations 
         if (i % 100 == 0)
         {
             printCost(X_train, Y_train, i);
         }
+        */
     }
 
 }
@@ -189,4 +192,13 @@ void LinearRegression::printPredictions(const std::vector<double>& predictions)
     std::cout << "Optimal bias: " << b << std::endl;
     //std::cout << "Optimal weights: " << *w << std::endl << "Optimal bias: " << *b << std::endl;
 }
-        
+
+void saveToCSV(const std::vector<std::vector<double>>& X, const std::vector<double>& Y, const std::vector<double>& predictions, const std::string& filename)
+{
+    std::ofstream file(filename);
+    file << "X1,ActualY,PredictedY\n";
+    for(size_t i = 0; i < X.size(); ++i) {
+        file << X[i][0] << "," << Y[i] << "," << predictions[i] << "\n";
+    }
+    file.close();
+}
